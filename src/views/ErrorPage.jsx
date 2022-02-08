@@ -7,7 +7,7 @@ export const ErrorPage = () => (
     <img src={page_not_found} className="page-not-found-img" alt="page not found" />
     <h2 className="page-not-found-h2">ERROR</h2>
     <p className="page-not-found-explanation">
-      Something bad with the payment happened or more probably you mistyped the url
+      In case you started the application at '/create-order' you need to go at '/' first
     </p>
   </div>
 );
