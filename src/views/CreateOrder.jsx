@@ -84,9 +84,8 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
       goodValidation={
         orderDataConsumer?.givenNames &&
         orderDataConsumer?.surname &&
-        (orderDataConsumer?.email.length === 0 ||
-          (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderDataConsumer?.email) &&
-            orderDataConsumer?.email.split(".").length === 2))
+        (!orderDataConsumer?.email.length ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(orderDataConsumer?.email))
       }
     />,
     <BillingForm
