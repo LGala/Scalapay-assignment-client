@@ -51,10 +51,13 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
   }, [createOrderCallResult]);
 
   useEffect(() => {
+    const shippingAmount = { amount: "10", currency: "EUR" };
+    const taxAmount = { amount: "10", currency: "EUR" };
+
     if (submit) {
       const orderData = {
         totalAmount: {
-          amount: getTotalAmount(items).toString(),
+          amount: (getTotalAmount(items) + Number(taxAmount.amount) + Number(shippingAmount.amount)).toString(),
           currency: "EUR"
         },
         consumer: orderDataConsumer,
@@ -67,8 +70,8 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
           redirectCancelUrl: "https://portal.staging.scalapay.com/failure-url"
         },
         merchantReference: "102322",
-        shippingAmount: { amount: "100", currency: "EUR" },
-        taxAmount: { amount: "100", currency: "EUR" },
+        shippingAmount: shippingAmount,
+        taxAmount: taxAmount,
         orderExpiryMilliseconds: 60 * 1000
       };
 
