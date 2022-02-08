@@ -1,0 +1,38 @@
+.shoe-img {
+  width: 400px;
+  height: 200px;
+}
+
+.item-container {
+  margin: 10px;
+  height: 300px;
+  margin: 30px;
+}
+
+.item-container:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.item-description {
+  font-weight: 500;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.cart-add,
+.cart-remove {
+  cursor: pointer;
+  background-color: #fae0e6;
+  border-radius: 20px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid;
+}
+
+.cart-add:hover,
+.cart-remove:hover {
+  border: 2px solid;
+}

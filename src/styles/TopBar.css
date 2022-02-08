@@ -1,0 +1,13 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: #fae0e6;
+  height: 70px;
+}
+
+.scalapay-logo {
+  height: 26px;
+  width: 138px;
+}

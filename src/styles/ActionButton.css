@@ -1,0 +1,19 @@
+.action-button {
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  color: white;
+  font-weight: 600;
+  padding: 18px 33px;
+  background: #333;
+  border: 1px;
+  border-radius: 7px;
+  width: 400px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background: #fae0e6;
+  color: #333;
+  border: 1px solid #333;
+}

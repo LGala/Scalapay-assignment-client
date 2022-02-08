@@ -1,0 +1,34 @@
+.not-found-container {
+  position: relative;
+  top: 125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: orangered;
+}
+
+.page-not-found-img,
+.page-not-found-h2,
+.page-not-found-explanation {
+  width: 260px;
+  margin: 5px;
+}
+
+.page-not-found-h2,
+.page-not-found-explanation {
+  text-align: center;
+}
+
+.page-not-found-img {
+  height: 326px;
+}
+
+.page-not-found-h2 {
+  font-size: 56px;
+  font-weight: 800;
+}
+
+.page-not-found-explanation {
+  font-size: 16px;
+}

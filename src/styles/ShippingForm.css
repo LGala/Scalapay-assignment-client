@@ -1,0 +1,16 @@
+.billing-shipping-equal-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  top: 50px;
+}
+
+.shipping-form-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

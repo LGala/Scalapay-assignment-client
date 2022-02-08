@@ -1,0 +1,13 @@
+.place-form-container {
+  position: relative;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.required-message {
+  font-size: 16px;
+}
