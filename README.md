@@ -2,7 +2,7 @@
 ## install project
 
 * clone the project
-* cd Scalapay-assignment-api/
+* cd Scalapay-assignment-client/
 * `yarn`
 
 ## run project
