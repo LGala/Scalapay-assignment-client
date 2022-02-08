@@ -11,9 +11,7 @@
 
 * `yarn start` and go [there](http://localhost:3000)
 
-## test the project
-
+## test the project (with different terminals)
 
 *  `yarn jest` launches the just tests
-
 *  `yarn cypress` launches the cypress tests
