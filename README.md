@@ -1,7 +1,7 @@
 # project setup 
 ## install the project
 
-* clone the project
+* git clone https://github.com/LGala/Scalapay-assignment-client.git
 * cd Scalapay-assignment-client/
 * `yarn`
 
