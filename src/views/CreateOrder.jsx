@@ -80,7 +80,7 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
     <ConsumerForm
       setConsumer={setOrderDataConsumer}
       goNextForm={goNextForm}
-      requiredMessage={"Required: Given names, Surname, Email in a@a.a format"}
+      requiredMessage={"Required: Given names, Surname, Email (empty or valid)"}
       goodValidation={
         orderDataConsumer?.givenNames &&
         orderDataConsumer?.surname &&
