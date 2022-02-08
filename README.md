@@ -1,20 +1,17 @@
-### `yarn start`
+# project setup 
+## install project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000)
+* clone the project and launch `yarn` inside it
 
-### `yarn test`
+## run project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* if you haven't already done it, go in the backend part and install and run the [server](https://github.com/LGala/Scalapay-assignment-api)
 
-### `yarn build`
+* `yarn start` and go [there](http://localhost:3000)
 
-Builds the app for production to the `build` folder.\
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## test project
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+*  `yarn jest` launches the just tests
 
-This command will remove the single build dependency from your project.
+*  `yarn cypress` launches the cypress tests
