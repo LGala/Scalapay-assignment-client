@@ -14,4 +14,4 @@
 ## test the project (with different terminals)
 
 *  `yarn jest` launches the just tests
-*  `yarn cypress` launches the cypress tests
+*  `yarn cypress` launches the cypress tests (remember to run the project first!)
