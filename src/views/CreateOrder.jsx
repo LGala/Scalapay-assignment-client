@@ -11,9 +11,7 @@ import { DiscountsForm } from "../components/DiscountsForm";
 
 import { createOrderCall } from "../actions/orders/create";
 
-import { getTotalAmount } from "../testable-functions/functions/getTotalAmount";
-
-const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
+const CreateOrder = ({ items, totalAmountWithoutDiscounts, createOrderCall, createOrderCallResult }) => {
   const [currentForm, setCurrentForm] = useState(0);
 
   const [submit, setSubmit] = useState(false);
@@ -24,19 +22,6 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
   const [orderDataBilling, setOrderDataBilling] = useState({});
   const [orderDataShipping, setOrderDataShipping] = useState({});
   const [orderDataDiscounts, setOrderDiscounts] = useState([]);
-
-  const showErrorPage = !items.length || !!createOrderCallResult?.error;
-
-  const goNextForm = () => {
-    if (billingIsTheSameOfShipping) {
-      setCurrentForm(prev => prev + 2);
-    } else {
-      setCurrentForm(prev => prev + 1);
-    }
-  };
-
-  const getTotalDiscount = discounts =>
-    discounts.map(({ amount }) => amount.amount).reduce((prev, curr) => Number(prev) + Number(curr), 0);
 
   useEffect(() => {
     if (billingIsTheSameOfShipping) {
@@ -50,14 +35,16 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
     }
   }, [createOrderCallResult]);
 
-  useEffect(() => {
-    const shippingAmount = { amount: "10", currency: "EUR" };
-    const taxAmount = { amount: "10", currency: "EUR" };
+  const getTotalDiscount = discounts =>
+    discounts.map(({ amount }) => amount.amount).reduce((prev, curr) => Number(prev) + Number(curr), 0);
 
+  const totalAmountWithDiscounts = totalAmountWithoutDiscounts - getTotalDiscount(orderDataDiscounts);
+
+  useEffect(() => {
     if (submit) {
       const orderData = {
         totalAmount: {
-          amount: (getTotalAmount(items) + Number(taxAmount.amount) + Number(shippingAmount.amount)).toString(),
+          amount: totalAmountWithDiscounts.toString(),
           currency: "EUR"
         },
         consumer: orderDataConsumer,
@@ -70,14 +57,30 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
           redirectCancelUrl: "https://portal.staging.scalapay.com/failure-url"
         },
         merchantReference: "102322",
-        shippingAmount: shippingAmount,
-        taxAmount: taxAmount,
+        shippingAmount: { amount: "10", currency: "EUR" },
+        taxAmount: { amount: "10", currency: "EUR" },
         orderExpiryMilliseconds: 60 * 1000
       };
 
       createOrderCall(orderData);
     }
-  }, [createOrderCall, items, orderDataBilling, orderDataConsumer, orderDataDiscounts, orderDataShipping, submit]);
+  }, [
+    createOrderCall,
+    items,
+    orderDataBilling,
+    orderDataConsumer,
+    orderDataDiscounts,
+    orderDataShipping,
+    submit,
+    totalAmountWithDiscounts
+  ]);
+
+  const goNextForm = () => {
+    setCurrentForm(prev => prev + (billingIsTheSameOfShipping ? 2 : 1));
+  };
+
+  const shippingWouldBeGoodValidated = orderData =>
+    orderData?.countryCode?.length === 2 && orderData?.postCode && orderData?.name && orderData?.line1;
 
   const forms = [
     <ConsumerForm
@@ -95,35 +98,26 @@ const CreateOrder = ({ items, createOrderCall, createOrderCallResult }) => {
       setBilling={setOrderDataBilling}
       goNextForm={goNextForm}
       setBillingIsTheSameOfShipping={setBillingIsTheSameOfShipping}
-      goodValidation={orderDataBilling?.countryCode?.length === 2 || orderDataBilling?.countryCode?.length === 0}
-      requiredMessage={"CountryCode shoud 2 letters long or empty"}
-      billingCanBeEqualToShipping={
-        orderDataBilling?.countryCode?.length === 2 &&
-        orderDataBilling?.name &&
-        orderDataBilling?.postCode &&
-        orderDataBilling?.line1
-      }
+      requiredMessage={"CountryCode should 2 letters long or empty"}
+      goodValidation={[0, 2].includes(orderDataBilling?.countryCode?.length)}
+      billingCanBeEqualToShipping={shippingWouldBeGoodValidated(orderDataBilling)}
     />,
     <ShippingForm
       setShipping={setOrderDataShipping}
       goNextForm={goNextForm}
       requiredMessage={"Required: Country code (2 letters), Name, Post code, line1"}
-      goodValidation={
-        orderDataShipping?.countryCode?.length === 2 &&
-        orderDataShipping?.postCode &&
-        orderDataShipping?.name &&
-        orderDataShipping?.line1
-      }
+      goodValidation={shippingWouldBeGoodValidated(orderDataShipping)}
     />,
     <DiscountsForm
       discounts={orderDataDiscounts}
       setDiscounts={setOrderDiscounts}
       setSubmit={setSubmit}
-      currentTotal={getTotalAmount(items) - getTotalDiscount(orderDataDiscounts)}
-      requiredMessage={"Required: Amount, Currency"}
-      goodValidation={orderDataDiscounts.every(({ amount }) => amount.amount.length && amount.currency.length)}
+      currentTotal={totalAmountWithDiscounts}
+      requiredMessage={"Required: Amount (positive number), Currency"}
     />
   ];
+
+  const showErrorPage = !!!items?.length || !!createOrderCallResult?.error;
 
   return <>{!showErrorPage ? forms[currentForm] : <ErrorPage />}</>;
 };
@@ -133,7 +127,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => ({
-  items: state.purchase,
+  items: state.purchase.items,
+  totalAmountWithoutDiscounts: state.purchase.totalAmountWithoutDiscounts,
   createOrderCallResult: state.createOrderCall
 });
 

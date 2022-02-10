@@ -4,15 +4,10 @@ import { DiscountItem } from "./DiscountItem";
 
 import "../styles/DiscountsForm.css";
 
-export const DiscountsForm = ({
-  discounts,
-  setDiscounts,
-  setSubmit,
-  requiredMessage,
-  goodValidation,
-  currentTotal
-}) => {
+export const DiscountsForm = ({ discounts, setDiscounts, setSubmit, requiredMessage, currentTotal }) => {
   const [discountsComponents, setDiscountsComponents] = useState([]);
+
+  const goodValidation = discounts.every(({ amount }) => amount.amount > 0 && amount.currency) && currentTotal > 0;
 
   return (
     <div className="discounts-items-container" data-cy="discounts-items-container">
@@ -36,7 +31,7 @@ export const DiscountsForm = ({
       />
       {!goodValidation && <label className="required-message">{requiredMessage}</label>}
       <ActionButton
-        show={goodValidation && currentTotal > 0}
+        show={goodValidation}
         label={"I'm done!"}
         dataCy={"submit-entire-flow"}
         action={() => {

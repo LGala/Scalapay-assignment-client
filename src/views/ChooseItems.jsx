@@ -12,7 +12,7 @@ import "../styles/ChooseItems.css";
 import { getTotalAmount } from "../testable-functions/functions/getTotalAmount";
 
 const ChooseItems = ({ purchase }) => {
-  const shippingAnTaxes = 20;
+  const shippingAndTaxes = 20;
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const ChooseItems = ({ purchase }) => {
 
   const cartLength = Object.values(cart).reduce((prev, curr) => prev + curr, 0);
 
-  const totalAmount = getTotalAmount(getItemsToBuy(cart, itemsData)) + shippingAnTaxes;
+  const totalAmountWithoutDiscounts = getTotalAmount(getItemsToBuy(cart, itemsData)) + shippingAndTaxes;
 
   const itemsComponents = itemsData.map(itemData => (
     <ShopItem key={itemData.sku} {...itemData} quantity={cart[itemData.sku]} setCart={setCart} />
@@ -33,12 +33,12 @@ const ChooseItems = ({ purchase }) => {
       </div>
       <div className="buy-items-button-container">
         <ActionButton
-          show={cartLength && totalAmount <= 1000}
+          show={cartLength && totalAmountWithoutDiscounts <= 1000}
           action={() => {
-            purchase(getItemsToBuy(cart, itemsData));
+            purchase({ items: getItemsToBuy(cart, itemsData), totalAmountWithoutDiscounts });
             navigate("/create-order");
           }}
-          label={`BUY  ${cartLength}  ITEMS  FOR  ${totalAmount} €  (MAX 1000 €)`}
+          label={`BUY  ${cartLength}  ITEMS  FOR  ${totalAmountWithoutDiscounts} €  (MAX 1000 €)`}
           dataCy={"buy-items"}
         />
       </div>

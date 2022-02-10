@@ -9,8 +9,10 @@ export const DiscountItem = ({ setDiscounts, id }) => {
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
+    const rightAmount = amount > 0 ? amount : "";
+
     setDiscounts(prev => {
-      prev[id] = { amount: { amount, currency }, displayName };
+      prev[id] = { amount: { amount: rightAmount, currency }, displayName };
       setDiscounts([...prev]);
     });
   }, [amount, currency, displayName, id, setDiscounts]);
